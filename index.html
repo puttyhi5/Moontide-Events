@@ -455,8 +455,14 @@
   <p class="hand">made with love for the neighborhood ♥</p>
   <p>Moontide Events · Kitsap County, WA</p>
 </footer>
+  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+  const db = supabase.createClient(
+  "https://nnuhcfhdzdfnkjdbzlab.supabase.co/rest/v1/",   // ← your Project URL
+  "sb_publishable_UHywycWqksbEtGGhbis8Rg_9AnXIsAf"        // ← your public key
+);
   // ---- vendor menu ----
   const services = [
     ["Canopy & tent rental","don't own a 10×10? we do"],
