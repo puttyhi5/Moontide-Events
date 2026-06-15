@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Application — Moontide Events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Karla:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#171B33;          /* deep night sky page background */
+    --paper:#EEF2F9;          /* moonlit paper for cards & inputs */
+    --paper-deep:#DDE5F2;
+    --ink:#20264A;            /* indigo ink */
+    --violet:#5236AB;
+    --violet-deep:#3D2884;
+    --teal:#19705F;
+    --blue:#2049B0;
+    --silver:#C9D6E8;         /* moonlight silver */
+    --ice:#A9CBF2;            /* ice-blue pop (use with dark text) */
+    --moon:#E9EEF6;
+    --lilac:#E4E2F6;
+    --mint:#D8EAE3;
+    --sky:#D6E4F7;
+    --starlight:#E8EDF7;      /* light text on night bg */
+    --focus:#2049B0;          /* focus ring on light surfaces */
+    --focus-night:#A9CBF2;    /* focus ring on dark surfaces */
+    --radius-wobble:255px 18px 225px 18px/18px 225px 18px 255px;
+    --radius-wobble2:18px 225px 18px 255px/255px 18px 225px 18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    font-family:'Karla',sans-serif;
+    background:var(--night);
+    color:var(--starlight);
+    line-height:1.55;
+    font-size:1.0625rem;
+    background-image:
+      radial-gradient(rgba(201,214,232,.32) 1px, transparent 1.6px),
+      radial-gradient(rgba(169,203,242,.16) 1.4px, transparent 2px);
+    background-size:34px 34px, 89px 89px;
+    background-position:0 0, 17px 29px;
+  }
+  .skip-link{
+    position:absolute;left:-9999px;top:0;
+    background:var(--ink);color:#fff;padding:.75rem 1.25rem;
+    border-radius:0 0 12px 0;z-index:100;font-weight:700;text-decoration:none;
+  }
+  .skip-link:focus{left:0}
+  :focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:4px}
+  .skip-link:focus-visible, button[type=submit]:focus-visible{outline:3px solid var(--focus-night)}
+
+  /* ---------- header ---------- */
+  header{
+    background:var(--violet-deep);
+    color:#fff;
+    padding:1rem 1.5rem;
+    border-bottom:4px solid var(--silver);
+  }
+  .header-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+  .logo-mark{flex:none}
+  .brand{font-family:'Fraunces',serif;font-weight:900;font-size:1.35rem;letter-spacing:.01em}
+  .brand small{display:block;font-family:'Caveat',cursive;font-weight:600;font-size:1.05rem;color:var(--ice);letter-spacing:.02em}
+
+  /* ---------- hero ---------- */
+  .hero{max-width:1080px;margin:0 auto;padding:3rem 1.5rem 2rem;position:relative}
+  .eyebrow{
+    display:inline-block;font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--ice);color:var(--ink);padding:.35rem .85rem;border:2px solid var(--silver);
+    border-radius:999px;transform:rotate(-1.5deg);margin-bottom:1rem;
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:900;
+    font-size:clamp(2.3rem,5.5vw,3.9rem);line-height:1.06;max-width:18ch;
+    color:var(--moon);
+  }
+  .squiggle-word{position:relative;display:inline-block;color:var(--ice)}
+  .squiggle-word svg{position:absolute;left:0;bottom:-.18em;width:100%;height:.32em}
+  .hero p.lede{margin-top:1.25rem;max-width:54ch;font-size:1.15rem}
+  .hero .hand-note{
+    font-family:'Caveat',cursive;font-size:1.5rem;color:var(--silver);
+    margin-top:.9rem;transform:rotate(-1deg);display:inline-flex;align-items:center;gap:.5rem;
+  }
+
+  /* ---------- layout ---------- */
+  .layout{max-width:1080px;margin:0 auto;padding:0 1.5rem 5rem;display:grid;grid-template-columns:1fr;gap:2rem}
+  @media (min-width: 900px){
+    .layout{grid-template-columns:minmax(0,1fr) 320px;align-items:start}
+  }
+
+  /* ---------- sections ---------- */
+  fieldset{
+    border:3px solid var(--ink);
+    border-radius:var(--radius-wobble);
+    background:var(--paper);
+    color:var(--ink);
+    padding:1.75rem 1.5rem 2rem;
+    margin-bottom:2.25rem;
+    box-shadow:6px 6px 0 var(--violet);
+  }
+  fieldset:nth-of-type(even){border-radius:var(--radius-wobble2)}
+  legend{
+    font-family:'Fraunces',serif;font-weight:900;font-size:1.45rem;
+    background:var(--ink);color:#fff;padding:.4rem 1.1rem;border-radius:999px;
+    display:flex;align-items:center;gap:.6rem;
+  }
+  legend .leg-doodle{flex:none;color:var(--ice)}
+  .section-hint{font-family:'Caveat',cursive;font-size:1.35rem;color:var(--violet);margin:-.25rem 0 1.1rem}
+
+  .field{margin-bottom:1.4rem}
+  .field:last-child{margin-bottom:0}
+  label.text-label, .group-label{display:block;font-weight:700;margin-bottom:.4rem}
+  .req{color:var(--violet);font-weight:700}
+  .optional{font-weight:400;color:#4c4968;font-size:.9rem}
+  input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],select,textarea{
+    width:100%;font:inherit;color:var(--ink);
+    padding:.75rem .9rem;background:#fff;
+    border:2px solid var(--ink);border-radius:10px 14px 10px 16px;
+    min-height:48px;
+  }
+  textarea{min-height:110px;resize:vertical}
+  input::placeholder,textarea::placeholder{color:#5c5a76}
+
+  .two-col{display:grid;grid-template-columns:1fr;gap:1.4rem 1.25rem}
+  @media (min-width:560px){.two-col{grid-template-columns:1fr 1fr}}
+
+  /* ---------- chips (radios) ---------- */
+  .chip-group{display:flex;flex-wrap:wrap;gap:.6rem}
+  .chip{position:relative}
+  .chip input{position:absolute;opacity:0;width:100%;height:100%;cursor:pointer}
+  .chip span{
+    display:inline-flex;align-items:center;justify-content:center;min-height:44px;
+    padding:.5rem 1.05rem;border:2px solid var(--ink);border-radius:999px;
+    background:#fff;font-weight:700;cursor:pointer;transition:transform .12s ease,background .12s ease;
+  }
+  .chip input:checked + span{background:var(--teal);color:#fff;transform:rotate(-1.2deg) scale(1.03)}
+  .chip:nth-child(even) input:checked + span{background:var(--blue)}
+  .chip:nth-child(3n) input:checked + span{background:var(--violet)}
+  .chip input:focus-visible + span{outline:3px solid var(--focus);outline-offset:3px}
+
+  /* ---------- service checkboxes ---------- */
+  .svc-grid{display:grid;grid-template-columns:1fr;gap:.7rem}
+  @media (min-width:560px){.svc-grid{grid-template-columns:1fr 1fr}}
+  .svc{position:relative}
+  .svc input{position:absolute;opacity:0;inset:0;cursor:pointer}
+  .svc-card{
+    display:flex;align-items:center;gap:.75rem;min-height:52px;
+    border:2px solid var(--ink);border-radius:14px 10px 16px 10px;
+    background:#fff;padding:.6rem .85rem;cursor:pointer;
+    transition:background .12s ease;
+  }
+  .svc:nth-child(4n+1) .svc-card{background:var(--lilac)}
+  .svc:nth-child(4n+2) .svc-card{background:var(--mint)}
+  .svc:nth-child(4n+3) .svc-card{background:var(--sky)}
+  .svc-box{
+    flex:none;width:26px;height:26px;border:2px solid var(--ink);border-radius:7px 5px 8px 5px;
+    background:#fff;display:grid;place-items:center;
+  }
+  .svc-box svg{opacity:0;transform:scale(.5);transition:all .15s ease}
+  .svc input:checked ~ .svc-card .svc-box svg{opacity:1;transform:scale(1)}
+  .svc input:checked ~ .svc-card{box-shadow:inset 0 0 0 2px var(--ink)}
+  .svc input:focus-visible ~ .svc-card{outline:3px solid var(--focus);outline-offset:3px}
+  .svc-name{font-weight:700}
+  .svc-sub{display:block;font-weight:400;font-size:.86rem;color:#3c3958}
+
+  /* ---------- ticket summary ---------- */
+  .ticket-wrap{position:relative}
+  @media (min-width:900px){.ticket-wrap{position:sticky;top:1.25rem}}
+  .ticket{
+    background:var(--paper);color:var(--ink);
+    border:3px solid var(--ink);
+    border-radius:18px;padding:1.5rem 1.4rem 1.75rem;
+    transform:rotate(1.2deg);
+    box-shadow:7px 7px 0 var(--ice);
+    background-image:
+      radial-gradient(circle at 0 50%, var(--night) 11px, transparent 12px),
+      radial-gradient(circle at 100% 50%, var(--night) 11px, transparent 12px);
+  }
+  .ticket h2{font-family:'Fraunces',serif;font-weight:900;font-size:1.3rem;color:var(--violet);display:flex;gap:.5rem;align-items:center}
+  .ticket .tick-sub{font-family:'Caveat',cursive;font-size:1.25rem;color:var(--teal);margin-bottom:1rem}
+  .tick-row{display:flex;justify-content:space-between;gap:.75rem;padding:.5rem 0;border-bottom:2px dashed rgba(32,38,74,.35);font-size:.95rem}
+  .tick-row dt{font-weight:700;color:var(--violet-deep);flex:none}
+  .tick-row dd{text-align:right}
+  .tick-services{margin-top:.85rem;font-size:.95rem}
+  .tick-services strong{color:var(--violet)}
+
+  /* ---------- submit ---------- */
+  .submit-bar{margin-top:.5rem}
+  button[type=submit]{
+    font:inherit;font-weight:700;font-size:1.15rem;cursor:pointer;
+    background:var(--violet);color:#fff;
+    border:3px solid var(--silver);border-radius:var(--radius-wobble);
+    padding:1rem 2.2rem;min-height:56px;width:100%;
+    box-shadow:5px 5px 0 var(--ice);
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  button[type=submit]:hover{background:var(--violet-deep);transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ice)}
+  button[type=submit]:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ice)}
+  .privacy-note{font-size:.88rem;color:var(--silver);margin-top:.8rem;text-align:center}
+
+  /* ---------- errors & status ---------- */
+  .error-summary{
+    display:none;background:#FBEAEA;border:3px solid #8C1D2F;border-radius:14px;
+    padding:1rem 1.25rem;margin-bottom:1.5rem;color:#641320;
+  }
+  .error-summary.active{display:block}
+  .error-summary h2{font-size:1.1rem;font-family:'Karla',sans-serif}
+  .error-summary a{color:#641320;font-weight:700}
+  .field-error{display:none;color:#8C1D2F;font-weight:700;font-size:.92rem;margin-top:.35rem}
+  .field-error.active{display:flex;align-items:center;gap:.4rem}
+  input[aria-invalid="true"]{border-color:#8C1D2F;border-width:3px}
+
+  .confirm{
+    display:none;background:var(--mint);color:var(--ink);border:3px solid var(--ink);
+    border-radius:var(--radius-wobble2);padding:2rem 1.75rem;box-shadow:6px 6px 0 var(--ice);
+  }
+  .confirm.active{display:block}
+  .confirm h2{font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem;color:var(--teal)}
+  .confirm p{margin-top:.6rem;max-width:60ch}
+
+  footer{background:var(--violet-deep);color:var(--starlight);text-align:center;padding:1.75rem 1.5rem;font-size:.95rem;border-top:4px solid var(--silver)}
+  footer .hand{font-family:'Caveat',cursive;font-size:1.35rem;color:var(--ice)}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to the vendor application</a>
+
+<header>
+  <div class="header-inner">
+    <span class="logo-mark" aria-hidden="true">
+      <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+        <path d="M28 5 C20 7 15 13 15.5 20 C16 27 21 31 27 30.5 C24 33 19.5 33.5 15.8 31.5 C10.5 28.6 8.6 21.5 11.5 15.5 C14.3 9.7 21.5 6 28 5 Z" stroke="#A9CBF2" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="33" cy="11" r="1.4" fill="#C9D6E8"/>
+        <circle cx="37" cy="18" r="1" fill="#C9D6E8"/>
+        <path d="M5 38 C9 35.5 12 40 16 37.5 C20 35 23 40 27 37.5 C31 35 34 40 41 37" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <div class="brand">Moontide Events
+      <small>markets for local makers &amp; growers</small>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">Vendor application</span>
+  <h1>Bring what you <span class="squiggle-word">make<svg viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 9 C 25 2, 45 13, 70 7 S 120 2, 145 9 S 185 4, 198 8" stroke="#7FB4EE" stroke-width="5" fill="none" stroke-linecap="round"/></svg></span> to the market.</h1>
+  <p class="lede">Moontide Events runs farmers markets, night markets, and makers markets that put local small businesses and farms front and center. Tell us what you grow, bake, brew, or build — and pick from the full menu of booth options and vendor support below. This is a preliminary application, not a contract; it just helps us find you the right market and the right spot.</p>
+  <p class="hand-note">
+    <svg width="34" height="22" viewBox="0 0 34 22" fill="none" aria-hidden="true"><path d="M2 16 C 10 18, 20 14, 28 7 M28 7 l-7 1 M28 7 l-1 7" stroke="#C9D6E8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+    takes about 5 minutes — moonlight optional ☾
+  </p>
+</section>
+
+<main id="main" class="layout">
+  <form id="intake" novalidate>
+
+    <div class="error-summary" id="errorSummary" role="alert" tabindex="-1">
+      <h2>A couple of things need a quick fix:</h2>
+      <ul id="errorList"></ul>
+    </div>
+
+    <!-- 1. About your business -->
+    <fieldset>
+      <legend><span class="leg-doodle" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2 l2.2 5 5.3.5 -4 3.6 1.2 5.2 L10 13.6 5.3 16.3 6.5 11.1 2.5 7.5 7.8 7 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>About your business</legend>
+      <p class="section-hint">introduce yourself — we love a good origin story</p>
+      <div class="two-col">
+        <div class="field">
+          <label class="text-label" for="name">Your name <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="name" name="name" autocomplete="name" required aria-required="true" aria-describedby="err-name">
+          <p class="field-error" id="err-name">Please enter your name.</p>
+        </div>
+        <div class="field">
+          <label class="text-label" for="biz">Business or farm name <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="biz" name="biz" autocomplete="organization" required aria-required="true" aria-describedby="err-biz">
+          <p class="field-error" id="err-biz">Please enter your business or farm name.</p>
+        </div>
+        <div class="field">
+          <label class="text-label" for="email">Email <span class="req" aria-hidden="true">*</span></label>
+          <input type="email" id="email" name="email" autocomplete="email" required aria-required="true" aria-describedby="err-email">
+          <p class="field-error" id="err-email">Please enter a valid email address.</p>
+        </div>
+        <div class="field">
+          <label class="text-label" for="phone">Phone <span class="optional">(optional)</span></label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label class="text-label" for="web">Website or social handle <span class="optional">(optional)</span></label>
+          <input type="text" id="web" name="web" placeholder="e.g., @moontidefarm or yoursite.com">
+        </div>
+        <div class="field">
+          <label class="text-label" for="city">Where are you based? <span class="optional">(optional)</span></label>
+          <input type="text" id="city" name="city" autocomplete="address-level2" placeholder="e.g., Port Orchard, WA">
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 2. What you bring -->
+    <fieldset>
+      <legend><span class="leg-doodle" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 16 C4 9 8 4 10 3 C12 4 16 9 16 16 M4 16 h12 M7 16 c0-3 1-5 3-6 c2 1 3 3 3 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" fill="none"/></svg></span>What you bring</legend>
+      <p class="section-hint">grown, baked, brewed, stitched, carved — all of it counts</p>
+      <div class="field">
+        <span class="group-label" id="lbl-cat">Vendor category <span class="req" aria-hidden="true">*</span></span>
+        <div class="chip-group" role="radiogroup" aria-labelledby="lbl-cat" aria-describedby="err-cat">
+          <label class="chip"><input type="radio" name="category" value="Farm &amp; produce"><span>Farm &amp; produce</span></label>
+          <label class="chip"><input type="radio" name="category" value="Prepared food"><span>Prepared food</span></label>
+          <label class="chip"><input type="radio" name="category" value="Baked goods"><span>Baked goods</span></label>
+          <label class="chip"><input type="radio" name="category" value="Beverages"><span>Beverages</span></label>
+          <label class="chip"><input type="radio" name="category" value="Handmade goods"><span>Handmade goods</span></label>
+          <label class="chip"><input type="radio" name="category" value="Art &amp; prints"><span>Art &amp; prints</span></label>
+          <label class="chip"><input type="radio" name="category" value="Bath &amp; body"><span>Bath &amp; body</span></label>
+          <label class="chip"><input type="radio" name="category" value="Plants &amp; flowers"><span>Plants &amp; flowers</span></label>
+          <label class="chip"><input type="radio" name="category" value="Vintage &amp; curios"><span>Vintage &amp; curios</span></label>
+          <label class="chip"><input type="radio" name="category" value="Other"><span>Something else</span></label>
+        </div>
+        <p class="field-error" id="err-cat">Please choose the category that fits you best.</p>
+      </div>
+      <div class="field">
+        <label class="text-label" for="products">Tell us about your products <span class="optional">(optional)</span></label>
+        <textarea id="products" name="products" placeholder="Heirloom tomatoes and cut flowers? Small-batch hot sauce? Hand-thrown mugs? Paint us a picture of your table."></textarea>
+      </div>
+      <div class="field">
+        <span class="group-label" id="lbl-exp">How long have you been selling?</span>
+        <div class="chip-group" role="radiogroup" aria-labelledby="lbl-exp">
+          <label class="chip"><input type="radio" name="experience" value="Brand new"><span>Brand new — first market!</span></label>
+          <label class="chip"><input type="radio" name="experience" value="1–3 years"><span>1–3 years</span></label>
+          <label class="chip"><input type="radio" name="experience" value="3+ years"><span>3+ years</span></label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 3. Booth & schedule -->
+    <fieldset>
+      <legend><span class="leg-doodle" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="13" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M3 8 h14 M7 2.5 v3 M13 2.5 v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>Booth &amp; schedule</legend>
+      <p class="section-hint">where you'll set up and how often we'll see you</p>
+      <div class="field">
+        <span class="group-label" id="lbl-booth">Booth size <span class="req" aria-hidden="true">*</span></span>
+        <div class="chip-group" role="radiogroup" aria-labelledby="lbl-booth" aria-describedby="err-booth">
+          <label class="chip"><input type="radio" name="booth" value="10×10 booth"><span>10×10 booth</span></label>
+          <label class="chip"><input type="radio" name="booth" value="10×20 double booth"><span>10×20 double</span></label>
+          <label class="chip"><input type="radio" name="booth" value="Half / shared table"><span>Half / shared table</span></label>
+          <label class="chip"><input type="radio" name="booth" value="Food truck or trailer"><span>Food truck / trailer</span></label>
+          <label class="chip"><input type="radio" name="booth" value="Not sure yet"><span>Not sure yet</span></label>
+        </div>
+        <p class="field-error" id="err-booth">Please pick a booth size (or "Not sure yet").</p>
+      </div>
+      <div class="field">
+        <span class="group-label" id="lbl-freq">How often would you like to vend?</span>
+        <div class="chip-group" role="radiogroup" aria-labelledby="lbl-freq">
+          <label class="chip"><input type="radio" name="frequency" value="Every market"><span>Every market</span></label>
+          <label class="chip"><input type="radio" name="frequency" value="Once or twice a month"><span>Once or twice a month</span></label>
+          <label class="chip"><input type="radio" name="frequency" value="Seasonally"><span>Seasonally</span></label>
+          <label class="chip"><input type="radio" name="frequency" value="One-time pop-up"><span>One-time pop-up</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="group-label" id="lbl-markets">Which markets call to you? <span class="optional">(check all that apply)</span></span>
+        <div class="chip-group" role="group" aria-labelledby="lbl-markets">
+          <label class="chip"><input type="checkbox" name="markets" value="Saturday farmers market"><span>Saturday farmers market</span></label>
+          <label class="chip"><input type="checkbox" name="markets" value="Evening night market"><span>Evening night market</span></label>
+          <label class="chip"><input type="checkbox" name="markets" value="Holiday makers market"><span>Holiday makers market</span></label>
+          <label class="chip"><input type="checkbox" name="markets" value="Pop-ups &amp; festivals"><span>Pop-ups &amp; festivals</span></label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 4. The full menu -->
+    <fieldset>
+      <legend><span class="leg-doodle" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4 h12 M4 8 h12 M4 12 h8 M4 16 h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>The full menu</legend>
+      <p class="section-hint">check everything that would make market day easier — mix &amp; match!</p>
+      <div class="svc-grid" role="group" aria-label="Booth options and vendor support you're interested in">
+        <!-- generated by JS for brevity -->
+      </div>
+    </fieldset>
+
+    <!-- 5. Permits & paperwork -->
+    <fieldset>
+      <legend><span class="leg-doodle" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="3.5" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 3.5 C7.5 2 8.6 1.2 10 1.2 C11.4 1.2 12.5 2 12.5 3.5 M7 9 l2 2 4-4.5 M7 14 h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>Permits &amp; paperwork</legend>
+      <p class="section-hint">no stress — "need guidance" is a perfectly good answer</p>
+      <div class="field">
+        <span class="group-label" id="lbl-ubi">Washington business license (UBI)</span>
+        <div class="chip-group" role="radiogroup" aria-labelledby="lbl-ubi">
+          <label class="chip"><input type="radio" name="ubi" value="Have it"><span>Have it</span></label>
+          <label class="chip"><input type="radio" name="ubi" value="In progress"><span>In progress</span></label>
+          <label class="chip"><input type="radio" name="ubi" value="Need guidance"><span>Need guidance</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="group-label" id="lbl-health">Health permits (food handler, cottage food, etc.)</span>
+        <div class="chip-group" role="radiogroup" aria-labelledby="lbl-health">
+          <label class="chip"><input type="radio" name="health" value="Have what I need"><span>Have what I need</span></label>
+          <label class="chip"><input type="radio" name="health" value="In progress"><span>In progress</span></label>
+          <label class="chip"><input type="radio" name="health" value="Need guidance"><span>Need guidance</span></label>
+          <label class="chip"><input type="radio" name="health" value="Not applicable"><span>Doesn't apply to me</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="group-label" id="lbl-ins">Liability insurance</span>
+        <div class="chip-group" role="radiogroup" aria-labelledby="lbl-ins">
+          <label class="chip"><input type="radio" name="insurance" value="Covered"><span>Covered</span></label>
+          <label class="chip"><input type="radio" name="insurance" value="In progress"><span>In progress</span></label>
+          <label class="chip"><input type="radio" name="insurance" value="Need guidance"><span>Need guidance</span></label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- 6. Community & care -->
+    <fieldset>
+      <legend><span class="leg-doodle" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 17 C 5 13 2 10 2 7 C2 4.5 4 3 6.2 3 C8 3 9.4 4.2 10 5.4 C10.6 4.2 12 3 13.8 3 C16 3 18 4.5 18 7 C18 10 15 13 10 17 Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" fill="none"/></svg></span>Community &amp; care</legend>
+      <p class="section-hint">our markets work because everyone has a place at them</p>
+      <div class="field">
+        <label class="text-label" for="access">Accommodations that would help you vend comfortably <span class="optional">(optional)</span></label>
+        <input type="text" id="access" name="access" placeholder="e.g., accessible booth placement, level ground, help with setup, a quieter corner">
+      </div>
+      <div class="field">
+        <label class="text-label" for="notes">Anything else we should know? <span class="optional">(optional)</span></label>
+        <textarea id="notes" name="notes" placeholder="Collaborations you'd love, products coming next season, a neighbor vendor you'd like to be next to — tell us everything."></textarea>
+      </div>
+    </fieldset>
+
+    <div class="submit-bar">
+      <button type="submit">Send my application ✦</button>
+      <p class="privacy-note">We'll only use your info to review your application and follow up — never for spam.</p>
+    </div>
+
+    <div class="confirm" id="confirm" tabindex="-1" role="status">
+      <h2>Application received — welcome aboard! 🌙</h2>
+      <p id="confirmText">Thanks! Our market team will review your application and reply within five business days with available dates, booth fees, and next steps.</p>
+    </div>
+  </form>
+
+  <!-- live ticket summary -->
+  <aside class="ticket-wrap" aria-label="Your plan so far">
+    <div class="ticket">
+      <h2><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 2 l2.4 5.6 6 .6 -4.5 4 1.3 5.9 L11 14.9 5.8 18.1 7.1 12.2 2.6 8.2 8.6 7.6 Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Your booth so far</h2>
+      <p class="tick-sub">updates as you fill things in ↓</p>
+      <dl aria-live="polite">
+        <div class="tick-row"><dt>Business</dt><dd id="t-biz">—</dd></div>
+        <div class="tick-row"><dt>Category</dt><dd id="t-cat">—</dd></div>
+        <div class="tick-row"><dt>Booth</dt><dd id="t-booth">—</dd></div>
+        <div class="tick-row"><dt>Schedule</dt><dd id="t-freq">—</dd></div>
+        <div class="tick-row"><dt>Markets</dt><dd id="t-mkts">—</dd></div>
+      </dl>
+      <p class="tick-services" aria-live="polite"><strong id="t-count">0</strong> menu options selected<span id="t-svcs"></span></p>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <p class="hand">made with love for the neighborhood ♥</p>
+  <p>Moontide Events · Port Orchard, WA</p>
+</footer>
+
+<script>
+  // ---- vendor menu ----
+  const services = [
+    ["Canopy & tent rental","don't own a 10×10? we do"],
+    ["Tables & chairs","sturdy, set up before you arrive"],
+    ["Electricity hookup","for lights, blenders & espresso"],
+    ["Water access","for food prep & flower buckets"],
+    ["Refrigeration / cold storage","keep it fresh till close"],
+    ["WiFi & card-reader help","take every kind of payment"],
+    ["Hand-painted signage","a booth sign with personality"],
+    ["Social media spotlight","we'll shout you out"],
+    ["Featured vendor story","interview on our site & newsletter"],
+    ["Load-in & load-out help","extra hands on market morning"],
+    ["Overnight equipment storage","for weekly regulars"],
+    ["Shared booth matching","split a booth with a fellow maker"],
+    ["EBT / SNAP token program","fresh food for every neighbor"],
+    ["Sampling setup guidance","let folks taste before they buy"],
+    ["Health permit guidance","cottage food, food handler & more"],
+    ["Insurance guidance","liability coverage made simple"],
+    ["New-vendor mentorship","paired with a market veteran"],
+    ["Live demo slot","show the craft behind the goods"],
+    ["Kids' activity table","seed planting, crafts & fun"],
+    ["Busker / performance slot","music & makers, side by side"]
+  ];
+  const grid = document.querySelector(".svc-grid");
+  services.forEach(([name, sub], i) => {
+    const lbl = document.createElement("label");
+    lbl.className = "svc";
+    lbl.innerHTML = `
+      <input type="checkbox" name="services" value="${name}">
+      <span class="svc-card">
+        <span class="svc-box" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 8.5 C4 10 5 11.5 6 13 C8 9 11 5 14 2.5" stroke="#136A5C" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg>
+        </span>
+        <span><span class="svc-name">${name}</span><span class="svc-sub">${sub}</span></span>
+      </span>`;
+    grid.appendChild(lbl);
+  });
+
+  // ---- live ticket ----
+  const form = document.getElementById("intake");
+  const fmt = v => v || "—";
+  function refreshTicket(){
+    const d = new FormData(form);
+    document.getElementById("t-biz").textContent = fmt(d.get("biz") && d.get("biz").trim());
+    document.getElementById("t-cat").textContent = fmt(d.get("category"));
+    document.getElementById("t-booth").textContent = fmt(d.get("booth"));
+    document.getElementById("t-freq").textContent = fmt(d.get("frequency"));
+    const mkts = d.getAll("markets");
+    document.getElementById("t-mkts").textContent = mkts.length ? (mkts.length === 1 ? mkts[0] : mkts.length + " markets") : "—";
+    const svcs = d.getAll("services");
+    document.getElementById("t-count").textContent = svcs.length;
+    document.getElementById("t-svcs").textContent = svcs.length ? ": " + svcs.slice(0,4).join(", ") + (svcs.length > 4 ? "…" : "") : "";
+  }
+  form.addEventListener("input", refreshTicket);
+  form.addEventListener("change", refreshTicket);
+
+  // ---- validation ----
+  const validators = [
+    {check:()=>form.name.value.trim()!=="", input:()=>form.name, err:"err-name", label:"Your name"},
+    {check:()=>form.biz.value.trim()!=="", input:()=>form.biz, err:"err-biz", label:"Business or farm name"},
+    {check:()=>/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email.value.trim()), input:()=>form.email, err:"err-email", label:"Email"},
+    {check:()=>!!new FormData(form).get("category"), input:()=>form.querySelector('input[name="category"]'), err:"err-cat", label:"Vendor category"},
+    {check:()=>!!new FormData(form).get("booth"), input:()=>form.querySelector('input[name="booth"]'), err:"err-booth", label:"Booth size"}
+  ];
+
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const summary = document.getElementById("errorSummary");
+    const list = document.getElementById("errorList");
+    list.innerHTML = "";
+    let firstBad = null;
+
+    validators.forEach(v => {
+      const ok = v.check();
+      const errEl = document.getElementById(v.err);
+      const inp = v.input();
+      errEl.classList.toggle("active", !ok);
+      errEl.innerHTML = ok ? errEl.textContent : "✗ " + errEl.textContent.replace(/^✗ /,"");
+      if (inp.type !== "radio") inp.setAttribute("aria-invalid", ok ? "false" : "true");
+      if (!ok){
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = "#" + inp.id || "#";
+        a.textContent = v.label + " needs attention";
+        a.addEventListener("click", ev => { ev.preventDefault(); inp.focus(); });
+        li.appendChild(a);
+        list.appendChild(li);
+        if (!firstBad) firstBad = inp;
+      }
+    });
+
+    if (firstBad){
+      summary.classList.add("active");
+      summary.focus();
+      return;
+    }
+    summary.classList.remove("active");
+
+    // success
+    const d = new FormData(form);
+    const confirm = document.getElementById("confirm");
+    const cat = (d.get("category") || "vendor").toLowerCase();
+    document.getElementById("confirmText").textContent =
+      `Thanks, ${d.get("name").trim().split(" ")[0]}! Your application for ${d.get("biz").trim()} (${cat}) is in. Our market team will review it and reply within five business days with available dates, booth fees, and next steps.`;
+    confirm.classList.add("active");
+    form.querySelector(".submit-bar").style.display = "none";
+    confirm.focus();
+  });
+</script>
+</body>
+</html>
