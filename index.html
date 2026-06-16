@@ -132,6 +132,14 @@
   }
   legend .leg-doodle{flex:none;color:var(--ice)}
   .section-hint{font-family:'Caveat',cursive;font-size:1.35rem;color:var(--violet);margin:-.25rem 0 1.1rem}
+  .guide-banner{
+    background:var(--lilac);color:var(--ink);
+    border:2px solid var(--ink);border-radius:14px 10px 16px 10px;
+    padding:.85rem 1rem;margin-bottom:1.25rem;font-size:.95rem;line-height:1.5;
+  }
+  .guide-banner strong{display:block;margin-bottom:.2rem}
+  .guide-banner a{color:var(--violet-deep);font-weight:700}
+  .guide-banner .es-line{display:block;margin-top:.4rem;font-size:.9rem}
 
   .field{margin-bottom:1.4rem}
   .field:last-child{margin-bottom:0}
@@ -482,6 +490,14 @@
     <fieldset>
       <legend><span class="leg-doodle" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="3.5" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M7.5 3.5 C7.5 2 8.6 1.2 10 1.2 C11.4 1.2 12.5 2 12.5 3.5 M7 9 l2 2 4-4.5 M7 14 h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>Permits &amp; paperwork</legend>
       <p class="section-hint">no stress — "need guidance" is a perfectly good answer</p>
+      <div class="guide-banner">
+        <strong>New to all this? We wrote you a plain-language guide. 🌙</strong>
+        Walk through each one step by step:
+        <a href="vendor-guide-en.html#license" target="_blank" rel="noopener">Business license<span class="sr-only"> (opens in a new tab)</span></a> ·
+        <a href="vendor-guide-en.html#permits" target="_blank" rel="noopener">Health permits<span class="sr-only"> (opens in a new tab)</span></a> ·
+        <a href="vendor-guide-en.html#insurance" target="_blank" rel="noopener">Liability insurance<span class="sr-only"> (opens in a new tab)</span></a>
+        <span class="es-line" lang="es">¿Prefiere español? <a href="vendor-guide-es.html" target="_blank" rel="noopener">Lea la guía en español<span class="sr-only"> (se abre en una pestaña nueva)</span></a></span>
+      </div>
       <div class="field">
         <span class="group-label" id="lbl-ubi">Washington business license (UBI)</span>
         <div class="chip-group" role="radiogroup" aria-labelledby="lbl-ubi">
@@ -558,8 +574,10 @@
 
 <footer>
   <p class="hand">made with love for the neighborhood ♥</p>
-  <p>Moontide Events · Port Orchard, WA</p>
+  <p>Moontide Events · Kitsap County, WA</p>
   <p class="footer-links">
+    <a class="link-btn" href="vendor-guide-en.html" target="_blank" rel="noopener">Vendor guide</a>
+    <a class="link-btn" href="vendor-guide-es.html" target="_blank" rel="noopener" lang="es">Guía en español</a>
     <button type="button" class="link-btn" data-open-privacy>Privacy notice</button>
   </p>
 </footer>
@@ -602,6 +620,7 @@
     <h2 id="constructionTitle">We're still raising the tents</h2>
     <p>Welcome! Moontide Events isn't quite open for business yet — this site is a preview while we get our markets ready behind the scenes.</p>
     <p>Feel free to look around and explore the vendor application. We'll be live soon, and we can't wait to gather the neighborhood.</p>
+    <p style="font-size:.95rem">New to selling at markets? Peek at our plain-language <a href="vendor-guide-en.html" target="_blank" rel="noopener">vendor guide</a> <span lang="es">(<a href="vendor-guide-es.html" target="_blank" rel="noopener">en español</a>)</span> for help with licenses, permits, and insurance.</p>
     <div class="dialog-actions">
       <button class="dialog-btn" id="constructionDismiss" type="button">Take a look around ✦</button>
     </div>
