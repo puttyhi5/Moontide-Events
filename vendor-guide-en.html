@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Setup Guide — Moontide Events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Karla:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#171B33;--paper:#EEF2F9;--ink:#20264A;--violet:#5236AB;--violet-deep:#3D2884;
+    --teal:#19705F;--blue:#2049B0;--silver:#C9D6E8;--ice:#A9CBF2;--moon:#E9EEF6;
+    --lilac:#E4E2F6;--mint:#D8EAE3;--sky:#D6E4F7;--starlight:#E8EDF7;
+    --focus:#2049B0;--focus-night:#A9CBF2;
+    --wobble:255px 18px 225px 18px/18px 225px 18px 255px;
+    --wobble2:18px 225px 18px 255px/255px 18px 225px 18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+  body{font-family:'Karla',sans-serif;background:var(--night);color:var(--starlight);line-height:1.6;font-size:1.0625rem}
+  .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:.75rem 1.25rem;border-radius:0 0 12px 0;z-index:100;font-weight:700;text-decoration:none}
+  .skip-link:focus{left:0}
+  :focus-visible{outline:3px solid var(--focus-night);outline-offset:3px;border-radius:4px}
+  a{color:var(--ice)}
+
+  #starfield{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .star{position:absolute;border-radius:50%;background:#e4ecf9;box-shadow:0 0 4px 1px rgba(201,214,232,.45);animation:twinkle var(--dur,3s) ease-in-out var(--delay,0s) infinite}
+  @keyframes twinkle{0%,100%{opacity:.12;transform:scale(.6)}50%{opacity:var(--max,1);transform:scale(1)}}
+
+  header{background:var(--violet-deep);color:#fff;padding:1rem 1.5rem;border-bottom:4px solid var(--silver)}
+  .header-inner{max-width:920px;margin:0 auto;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;justify-content:space-between}
+  .brand-wrap{display:flex;align-items:center;gap:.7rem}
+  .brand{font-family:'Fraunces',serif;font-weight:900;font-size:1.3rem}
+  .brand small{display:block;font-family:'Caveat',cursive;font-weight:600;font-size:1rem;color:var(--ice)}
+  .lang-switch{font-weight:700;font-size:.9rem;background:var(--ice);color:var(--ink);padding:.4rem .9rem;border-radius:999px;text-decoration:none;border:2px solid var(--silver)}
+  .lang-switch:hover{background:#fff}
+
+  .wrap{max-width:920px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+  .eyebrow{display:inline-block;font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;background:var(--ice);color:var(--ink);padding:.35rem .85rem;border:2px solid var(--silver);border-radius:999px;transform:rotate(-1.5deg);margin-bottom:1rem}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2rem,5vw,3rem);line-height:1.08;color:var(--moon);max-width:20ch}
+  .lede{margin-top:1rem;max-width:60ch;font-size:1.12rem}
+
+  .disclaimer{background:rgba(233,238,246,.08);border:2px dashed var(--silver);border-radius:14px;padding:1rem 1.2rem;margin:1.5rem 0;font-size:.95rem}
+  .disclaimer strong{color:var(--ice)}
+
+  .jump{background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:var(--wobble);padding:1.25rem 1.4rem;margin:1.75rem 0;box-shadow:6px 6px 0 var(--violet)}
+  .jump h2{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:.6rem}
+  .jump ol{margin-left:1.2rem;line-height:1.9}
+  .jump a{color:var(--violet-deep);font-weight:700}
+
+  .helper{background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:var(--wobble2);padding:1.4rem 1.5rem;margin:1.75rem 0;box-shadow:6px 6px 0 var(--teal)}
+  .helper h2{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:.4rem;color:var(--violet-deep)}
+  .helper .hint{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--teal);margin-bottom:.8rem}
+  .helper table{width:100%;border-collapse:collapse;font-size:.96rem}
+  .helper th,.helper td{text-align:left;padding:.55rem .5rem;border-bottom:2px solid rgba(32,38,74,.15);vertical-align:top}
+  .helper th{font-weight:700;color:var(--violet-deep)}
+  .helper td:first-child{font-weight:700;width:38%}
+
+  section.card{background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:var(--wobble);padding:1.75rem 1.6rem 2rem;margin:2rem 0;box-shadow:6px 6px 0 var(--violet);scroll-margin-top:1rem}
+  section.card:nth-of-type(even){border-radius:var(--wobble2)}
+  .card-num{font-family:'Caveat',cursive;font-size:1.4rem;color:var(--teal)}
+  section.card h2{font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem;color:var(--violet-deep);margin:.1rem 0 .3rem}
+  section.card h3{font-family:'Karla',sans-serif;font-weight:700;font-size:1.08rem;margin:1.3rem 0 .35rem;color:var(--ink)}
+  section.card p{margin-bottom:.7rem}
+  section.card ul{margin:.3rem 0 .8rem 1.2rem}
+  section.card li{margin-bottom:.4rem}
+  section.card a{color:var(--violet-deep);font-weight:700}
+  .facts{display:flex;flex-wrap:wrap;gap:.6rem;margin:.9rem 0}
+  .fact{background:var(--lilac);border:2px solid var(--ink);border-radius:10px;padding:.4rem .8rem;font-size:.9rem;font-weight:700}
+  .fact.cost{background:var(--mint)}
+  .fact.time{background:var(--sky)}
+  .tip{background:var(--moon);border-left:5px solid var(--teal);border-radius:8px;padding:.7rem .9rem;margin:.9rem 0;font-size:.97rem}
+  .tip strong{color:var(--teal)}
+  .steps{counter-reset:step;list-style:none;margin-left:0!important}
+  .steps li{counter-increment:step;position:relative;padding-left:2.2rem;margin-bottom:.6rem}
+  .steps li::before{content:counter(step);position:absolute;left:0;top:0;width:1.6rem;height:1.6rem;background:var(--violet);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.9rem}
+
+  .back-link{display:inline-block;margin-top:1.5rem;font-weight:700;background:var(--violet);color:#fff;border:3px solid var(--silver);border-radius:14px 18px 14px 18px;padding:.75rem 1.6rem;text-decoration:none;box-shadow:4px 4px 0 var(--ice)}
+  .back-link:hover{background:var(--violet-deep)}
+  footer{background:var(--violet-deep);color:var(--starlight);text-align:center;padding:1.75rem 1.5rem;border-top:4px solid var(--silver);margin-top:2rem}
+  footer .hand{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--ice)}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to the guide</a>
+<div id="starfield" aria-hidden="true"></div>
+
+<header>
+  <div class="header-inner">
+    <div class="brand-wrap">
+      <span aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 46 46" fill="none"><path d="M28 5 C20 7 15 13 15.5 20 C16 27 21 31 27 30.5 C24 33 19.5 33.5 15.8 31.5 C10.5 28.6 8.6 21.5 11.5 15.5 C14.3 9.7 21.5 6 28 5 Z" stroke="#A9CBF2" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="33" cy="11" r="1.4" fill="#C9D6E8"/><path d="M5 38 C9 35.5 12 40 16 37.5 C20 35 23 40 27 37.5 C31 35 34 40 41 37" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+      </span>
+      <span class="brand">Moontide Events<small>vendor setup guide</small></span>
+    </div>
+    <a class="lang-switch" href="vendor-guide-es.html" lang="es">Español →</a>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <span class="eyebrow">Getting set up to sell</span>
+  <h1>Your plain-language guide to selling at market.</h1>
+  <p class="lede">Three things stand between you and your first booth: a Washington business license, the right health permit (if you sell food), and liability insurance. This guide walks through each one in plain English — no jargon, no assumptions. Take it one step at a time.</p>
+
+  <div class="disclaimer">
+    <strong>Friendly heads-up:</strong> This is general guidance to help you get started, current as of June 2026. It isn't legal, tax, or insurance advice, and rules and fees change. The official agencies linked below are always the final word — when in doubt, check with them or reach out to us and we'll help you find the answer.
+  </div>
+
+  <nav class="jump" aria-label="Jump to a section">
+    <h2>What we'll cover</h2>
+    <ol>
+      <li><a href="#license">Washington business license</a> — almost everyone needs this</li>
+      <li><a href="#permits">Health permits</a> — if you sell food</li>
+      <li><a href="#insurance">Liability insurance</a> — usually required to book a booth</li>
+    </ol>
+  </nav>
+
+  <div class="helper">
+    <h2>Which do I actually need?</h2>
+    <p class="hint">a quick map based on what you sell</p>
+    <table>
+      <tr><th>If you sell…</th><th>You'll typically need…</th></tr>
+      <tr><td>Fresh whole produce (uncut fruit &amp; veg)</td><td>Business license + insurance. Usually <em>no</em> health permit.</td></tr>
+      <tr><td>Shelf-stable home goods (jams, breads, cookies, dried herbs)</td><td>Business license + <strong>Cottage Food Permit</strong> + food worker card + insurance.</td></tr>
+      <tr><td>Food cooked or served on-site (hot food, samples, cut fruit)</td><td>Business license + <strong>temporary food / farmers market permit</strong> + food worker card + insurance.</td></tr>
+      <tr><td>Crafts, art, or other non-food goods</td><td>Business license + insurance. No health permit.</td></tr>
+    </table>
+  </div>
+
+  <!-- 1. BUSINESS LICENSE -->
+  <section class="card" id="license">
+    <span class="card-num">Step one</span>
+    <h2>Washington business license</h2>
+    <p>This registers your business with the state and gives you a <strong>UBI number</strong> (Unified Business Identifier) — a nine-digit ID that follows your business everywhere, like a social security number for your stall.</p>
+
+    <h3>Do I need one?</h3>
+    <p>You need a state business license if any of these are true: you expect to earn <strong>$12,000 or more a year</strong>, you'll sell under a business name (not just your own legal name), you'll collect sales tax, or you plan to hire help. For most market vendors, the answer is yes.</p>
+
+    <div class="facts">
+      <span class="fact cost">Cost: about $50 to apply</span>
+      <span class="fact time">Time: ~10 business days online</span>
+    </div>
+
+    <h3>How to get it</h3>
+    <ol class="steps">
+      <li>Go to the Washington Department of Revenue at <a href="https://dor.wa.gov" target="_blank" rel="noopener">dor.wa.gov</a> and start the <strong>Business Licensing Wizard</strong> — it asks about your business and tells you exactly what you need.</li>
+      <li>Create a free SAW (SecureAccess Washington) account when prompted.</li>
+      <li>Complete the <strong>Business License Application</strong>. You'll need your Social Security Number <em>or</em> ITIN, your business details, and an estimate of your yearly income.</li>
+      <li>Pay the application processing fee (around $50; a trade name or city endorsement may add a small amount).</li>
+      <li>Receive your UBI and license — about 10 business days online, a bit longer if city endorsements apply.</li>
+    </ol>
+
+    <div class="tip"><strong>Moontide tip:</strong> An ITIN works in place of a Social Security Number, so you can apply whether or not you have an SSN. Apply as early as you can — your UBI is needed for nearly everything else, including the cottage food and insurance steps below.</div>
+  </section>
+
+  <!-- 2. HEALTH PERMITS -->
+  <section class="card" id="permits">
+    <span class="card-num">Step two</span>
+    <h2>Health permits (food vendors)</h2>
+    <p>Only food sellers need a health permit, and the <em>type</em> depends on what you sell and how it's handled. There are two main paths, plus a card almost every food worker needs. If you sell crafts or whole produce, you can skip ahead to insurance.</p>
+
+    <h3>Path A — Shelf-stable home goods: the Cottage Food Permit</h3>
+    <p>If you bake or make <strong>non-perishable</strong> goods in your home kitchen — breads, cookies, jams, jellies, fruit butters, dried herbs and teas — you'll want a <strong>WSDA Cottage Food Permit</strong>. It allows direct sales to customers at places like farmers markets.</p>
+    <div class="facts">
+      <span class="fact cost">Cost: $355 for two years</span>
+      <span class="fact time">Time: plan 6–8+ weeks</span>
+    </div>
+    <ul>
+      <li><strong>Allowed:</strong> baked goods, stovetop candies, jams/jellies/preserves, dried herbs and tea blends, extracts.</li>
+      <li><strong>Not allowed:</strong> anything needing refrigeration — cream or custard pies, fresh salsa, canned vegetables, meat or fish.</li>
+      <li>Includes a <strong>home kitchen inspection</strong>, a business plan, and label approval. Sales are capped at $35,000/year.</li>
+      <li>Start at <a href="https://agr.wa.gov/departments/food-safety/food-safety/cottage-food" target="_blank" rel="noopener">WSDA Cottage Food</a>.</li>
+    </ul>
+
+    <h3>Path B — Cooked or served on-site: temporary food / farmers market permit</h3>
+    <p>If you prepare, cook, or serve food at the market — hot food, drinks, cut fruit, samples — you'll need a permit from <strong>Kitsap Public Health</strong>. There's a specific permit for authorized farmers markets, and each market you attend needs its own.</p>
+    <ul>
+      <li>The fee depends on how risky your menu is. Some simple, low-risk foods are <strong>fee-exempt</strong> — but you still submit an application so they can confirm it.</li>
+      <li>Apply and read the details at <a href="https://www.kitsappublichealth.org/fle/tempfood" target="_blank" rel="noopener">Kitsap Public Health — Temporary Food</a>.</li>
+    </ul>
+
+    <h3>Almost everyone in food needs: a Food Worker Card</h3>
+    <p>If you handle food, you (and anyone helping you) need a Washington <strong>Food Worker Card</strong>. It's a short online course and quiz.</p>
+    <div class="facts"><span class="fact cost">Cost: about $10</span></div>
+    <ul>
+      <li>Get it at <a href="https://www.foodworkercard.wa.gov" target="_blank" rel="noopener">foodworkercard.wa.gov</a>. Note: only Washington's official card counts — cards from other states or private programs aren't accepted.</li>
+    </ul>
+
+    <div class="tip"><strong>Moontide tip:</strong> The cottage food permit takes the longest of anything in this guide — start it months before the season if you can. Not sure which path is yours? Tell us what you make and we'll point you the right way.</div>
+  </section>
+
+  <!-- 3. INSURANCE -->
+  <section class="card" id="insurance">
+    <span class="card-num">Step three</span>
+    <h2>Liability insurance</h2>
+    <p>Most markets — Moontide included — ask vendors to carry <strong>general liability insurance</strong> before booking a booth. It protects you (and the market) if someone is hurt or something is damaged because of your booth: a slip by your table, an allergic reaction, a tent that blows over.</p>
+
+    <h3>What markets usually ask for</h3>
+    <ul>
+      <li><strong>General liability</strong>, commonly <strong>$1,000,000 per occurrence</strong> and $2,000,000 total.</li>
+      <li><strong>"Additional insured"</strong> status — adding the market to your policy so it's covered too. Many insurers add this for free.</li>
+      <li>A <strong>Certificate of Insurance (COI)</strong> — the one-page proof we'll ask to see. Most insurers issue it instantly.</li>
+    </ul>
+
+    <div class="facts">
+      <span class="fact cost">Cost: roughly $200–$500 / year</span>
+      <span class="fact time">Time: often same-day</span>
+    </div>
+
+    <h3>Where to get it</h3>
+    <p>Vendor-specific programs are usually the easiest and cheapest, and they understand market requirements:</p>
+    <ul>
+      <li><strong>Food vendors:</strong> programs like FLIP (<a href="https://www.fliprogram.com/farmers-market-insurance" target="_blank" rel="noopener">fliprogram.com</a>) include product liability for food and start around $299/year.</li>
+      <li><strong>Crafts &amp; art vendors:</strong> programs like ACT Insurance (<a href="https://www.actinsurance.com/farmers-markets-insurance" target="_blank" rel="noopener">actinsurance.com</a>) cover handmade goods, with single-event or annual options.</li>
+      <li>You can also ask your current home or business insurer — just make sure any food policy includes <strong>product liability</strong>.</li>
+    </ul>
+
+    <div class="tip"><strong>Moontide tip:</strong> If you only do a few markets a year, look for a single-event or short-term policy instead of annual — it can cost far less. Always get a couple of quotes; the cheapest isn't always the right coverage.</div>
+  </section>
+
+  <p>That's the whole map. Tackle them in order — license first, then permits, then insurance — and you'll be ready to set up your stall. Questions on any of it? We're glad to help you through it.</p>
+
+  <a class="back-link" href="index.html">← Back to the vendor application</a>
+</main>
+
+<footer>
+  <p class="hand">we're glad you're here ♥</p>
+  <p>Moontide Events · Kitsap County, WA · <a href="mailto:hello@moontideevents.com">hello@moontideevents.com</a></p>
+</footer>
+
+<script>
+  (function(){
+    const field=document.getElementById("starfield");if(!field)return;
+    let html="";for(let i=0;i<60;i++){
+      const s=(Math.random()*1.7+0.7).toFixed(2),t=(Math.random()*100).toFixed(2),l=(Math.random()*100).toFixed(2),
+      d=(Math.random()*3.5+2.5).toFixed(2),de=(Math.random()*6).toFixed(2),m=(Math.random()*0.45+0.55).toFixed(2);
+      html+=`<span class="star" style="top:${t}%;left:${l}%;width:${s}px;height:${s}px;opacity:${m};--dur:${d}s;--delay:${de}s;--max:${m}"></span>`;
+    }field.innerHTML=html;
+  })();
+</script>
+</body>
+</html>

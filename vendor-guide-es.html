@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía para Vendedores — Moontide Events</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Karla:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#171B33;--paper:#EEF2F9;--ink:#20264A;--violet:#5236AB;--violet-deep:#3D2884;
+    --teal:#19705F;--blue:#2049B0;--silver:#C9D6E8;--ice:#A9CBF2;--moon:#E9EEF6;
+    --lilac:#E4E2F6;--mint:#D8EAE3;--sky:#D6E4F7;--starlight:#E8EDF7;
+    --focus:#2049B0;--focus-night:#A9CBF2;
+    --wobble:255px 18px 225px 18px/18px 225px 18px 255px;
+    --wobble2:18px 225px 18px 255px/255px 18px 225px 18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+  body{font-family:'Karla',sans-serif;background:var(--night);color:var(--starlight);line-height:1.6;font-size:1.0625rem}
+  .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:.75rem 1.25rem;border-radius:0 0 12px 0;z-index:100;font-weight:700;text-decoration:none}
+  .skip-link:focus{left:0}
+  :focus-visible{outline:3px solid var(--focus-night);outline-offset:3px;border-radius:4px}
+  a{color:var(--ice)}
+
+  #starfield{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .star{position:absolute;border-radius:50%;background:#e4ecf9;box-shadow:0 0 4px 1px rgba(201,214,232,.45);animation:twinkle var(--dur,3s) ease-in-out var(--delay,0s) infinite}
+  @keyframes twinkle{0%,100%{opacity:.12;transform:scale(.6)}50%{opacity:var(--max,1);transform:scale(1)}}
+
+  header{background:var(--violet-deep);color:#fff;padding:1rem 1.5rem;border-bottom:4px solid var(--silver)}
+  .header-inner{max-width:920px;margin:0 auto;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;justify-content:space-between}
+  .brand-wrap{display:flex;align-items:center;gap:.7rem}
+  .brand{font-family:'Fraunces',serif;font-weight:900;font-size:1.3rem}
+  .brand small{display:block;font-family:'Caveat',cursive;font-weight:600;font-size:1rem;color:var(--ice)}
+  .lang-switch{font-weight:700;font-size:.9rem;background:var(--ice);color:var(--ink);padding:.4rem .9rem;border-radius:999px;text-decoration:none;border:2px solid var(--silver)}
+  .lang-switch:hover{background:#fff}
+
+  .wrap{max-width:920px;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+  .eyebrow{display:inline-block;font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;background:var(--ice);color:var(--ink);padding:.35rem .85rem;border:2px solid var(--silver);border-radius:999px;transform:rotate(-1.5deg);margin-bottom:1rem}
+  h1{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(2rem,5vw,3rem);line-height:1.08;color:var(--moon);max-width:20ch}
+  .lede{margin-top:1rem;max-width:60ch;font-size:1.12rem}
+
+  .disclaimer{background:rgba(233,238,246,.08);border:2px dashed var(--silver);border-radius:14px;padding:1rem 1.2rem;margin:1.5rem 0;font-size:.95rem}
+  .disclaimer strong{color:var(--ice)}
+
+  .jump{background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:var(--wobble);padding:1.25rem 1.4rem;margin:1.75rem 0;box-shadow:6px 6px 0 var(--violet)}
+  .jump h2{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:.6rem}
+  .jump ol{margin-left:1.2rem;line-height:1.9}
+  .jump a{color:var(--violet-deep);font-weight:700}
+
+  .helper{background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:var(--wobble2);padding:1.4rem 1.5rem;margin:1.75rem 0;box-shadow:6px 6px 0 var(--teal)}
+  .helper h2{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:.4rem;color:var(--violet-deep)}
+  .helper .hint{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--teal);margin-bottom:.8rem}
+  .helper table{width:100%;border-collapse:collapse;font-size:.96rem}
+  .helper th,.helper td{text-align:left;padding:.55rem .5rem;border-bottom:2px solid rgba(32,38,74,.15);vertical-align:top}
+  .helper th{font-weight:700;color:var(--violet-deep)}
+  .helper td:first-child{font-weight:700;width:38%}
+
+  section.card{background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:var(--wobble);padding:1.75rem 1.6rem 2rem;margin:2rem 0;box-shadow:6px 6px 0 var(--violet);scroll-margin-top:1rem}
+  section.card:nth-of-type(even){border-radius:var(--wobble2)}
+  .card-num{font-family:'Caveat',cursive;font-size:1.4rem;color:var(--teal)}
+  section.card h2{font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem;color:var(--violet-deep);margin:.1rem 0 .3rem}
+  section.card h3{font-family:'Karla',sans-serif;font-weight:700;font-size:1.08rem;margin:1.3rem 0 .35rem;color:var(--ink)}
+  section.card p{margin-bottom:.7rem}
+  section.card ul{margin:.3rem 0 .8rem 1.2rem}
+  section.card li{margin-bottom:.4rem}
+  section.card a{color:var(--violet-deep);font-weight:700}
+  .facts{display:flex;flex-wrap:wrap;gap:.6rem;margin:.9rem 0}
+  .fact{background:var(--lilac);border:2px solid var(--ink);border-radius:10px;padding:.4rem .8rem;font-size:.9rem;font-weight:700}
+  .fact.cost{background:var(--mint)}
+  .fact.time{background:var(--sky)}
+  .tip{background:var(--moon);border-left:5px solid var(--teal);border-radius:8px;padding:.7rem .9rem;margin:.9rem 0;font-size:.97rem}
+  .tip strong{color:var(--teal)}
+  .steps{counter-reset:step;list-style:none;margin-left:0!important}
+  .steps li{counter-increment:step;position:relative;padding-left:2.2rem;margin-bottom:.6rem}
+  .steps li::before{content:counter(step);position:absolute;left:0;top:0;width:1.6rem;height:1.6rem;background:var(--violet);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.9rem}
+
+  .back-link{display:inline-block;margin-top:1.5rem;font-weight:700;background:var(--violet);color:#fff;border:3px solid var(--silver);border-radius:14px 18px 14px 18px;padding:.75rem 1.6rem;text-decoration:none;box-shadow:4px 4px 0 var(--ice)}
+  .back-link:hover{background:var(--violet-deep)}
+  footer{background:var(--violet-deep);color:var(--starlight);text-align:center;padding:1.75rem 1.5rem;border-top:4px solid var(--silver);margin-top:2rem}
+  footer .hand{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--ice)}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar a la guía</a>
+<div id="starfield" aria-hidden="true"></div>
+
+<header>
+  <div class="header-inner">
+    <div class="brand-wrap">
+      <span aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 46 46" fill="none"><path d="M28 5 C20 7 15 13 15.5 20 C16 27 21 31 27 30.5 C24 33 19.5 33.5 15.8 31.5 C10.5 28.6 8.6 21.5 11.5 15.5 C14.3 9.7 21.5 6 28 5 Z" stroke="#A9CBF2" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="33" cy="11" r="1.4" fill="#C9D6E8"/><path d="M5 38 C9 35.5 12 40 16 37.5 C20 35 23 40 27 37.5 C31 35 34 40 41 37" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+      </span>
+      <span class="brand">Moontide Events<small>guía para vendedores</small></span>
+    </div>
+    <a class="lang-switch" href="vendor-guide-en.html" lang="en">English →</a>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <span class="eyebrow">Prepárese para vender</span>
+  <h1>Su guía sencilla para vender en el mercado.</h1>
+  <p class="lede">Tres cosas se interponen entre usted y su primer puesto: una licencia de negocio de Washington, el permiso de salud adecuado (si vende alimentos) y un seguro de responsabilidad civil. Esta guía explica cada uno en palabras claras — sin tecnicismos. Vaya paso a paso.</p>
+
+  <div class="disclaimer">
+    <strong>Una nota amistosa:</strong> Esta es una guía general para ayudarle a empezar, vigente a junio de 2026. No es asesoría legal, fiscal ni de seguros, y las reglas y tarifas cambian. Las agencias oficiales enlazadas abajo siempre tienen la última palabra — si tiene dudas, consúltelas o escríbanos y le ayudamos a encontrar la respuesta.
+  </div>
+
+  <nav class="jump" aria-label="Ir a una sección">
+    <h2>Lo que veremos</h2>
+    <ol>
+      <li><a href="#license">Licencia de negocio de Washington</a> — casi todos la necesitan</li>
+      <li><a href="#permits">Permisos de salud</a> — si vende alimentos</li>
+      <li><a href="#insurance">Seguro de responsabilidad civil</a> — normalmente exigido para reservar un puesto</li>
+    </ol>
+  </nav>
+
+  <div class="helper">
+    <h2>¿Cuál necesito en realidad?</h2>
+    <p class="hint">una guía rápida según lo que vende</p>
+    <table>
+      <tr><th>Si vende…</th><th>Normalmente necesitará…</th></tr>
+      <tr><td>Productos frescos enteros (frutas y verduras sin cortar)</td><td>Licencia de negocio + seguro. Por lo general <em>no</em> requiere permiso de salud.</td></tr>
+      <tr><td>Productos caseros no perecederos (mermeladas, panes, galletas, hierbas secas)</td><td>Licencia de negocio + <strong>Permiso de Comida Casera (Cottage Food)</strong> + tarjeta de manipulador de alimentos + seguro.</td></tr>
+      <tr><td>Comida cocinada o servida en el lugar (comida caliente, muestras, fruta cortada)</td><td>Licencia de negocio + <strong>permiso temporal de alimentos / de mercado</strong> + tarjeta de manipulador + seguro.</td></tr>
+      <tr><td>Artesanías, arte u otros productos que no son alimentos</td><td>Licencia de negocio + seguro. Sin permiso de salud.</td></tr>
+    </table>
+  </div>
+
+  <!-- 1. LICENCIA -->
+  <section class="card" id="license">
+    <span class="card-num">Paso uno</span>
+    <h2>Licencia de negocio de Washington</h2>
+    <p>Registra su negocio ante el estado y le otorga un <strong>número UBI</strong> (Identificador Unificado de Negocio) — un número de nueve dígitos que acompaña a su negocio en todas partes, como un número de seguro social para su puesto.</p>
+
+    <h3>¿La necesito?</h3>
+    <p>Necesita una licencia estatal si cumple cualquiera de estos casos: espera ganar <strong>$12,000 o más al año</strong>, venderá bajo un nombre comercial (no solo su nombre legal), cobrará impuesto sobre las ventas, o piensa contratar ayuda. Para la mayoría de vendedores de mercado, la respuesta es sí.</p>
+
+    <div class="facts">
+      <span class="fact cost">Costo: unos $50 para solicitar</span>
+      <span class="fact time">Tiempo: ~10 días hábiles en línea</span>
+    </div>
+
+    <h3>Cómo obtenerla</h3>
+    <ol class="steps">
+      <li>Vaya al Departamento de Ingresos de Washington en <a href="https://dor.wa.gov" target="_blank" rel="noopener">dor.wa.gov</a> y use el <strong>Business Licensing Wizard</strong> (asistente de licencias) — le pregunta sobre su negocio y le indica exactamente qué necesita.</li>
+      <li>Cree una cuenta gratuita de SAW (SecureAccess Washington) cuando se lo pida.</li>
+      <li>Complete la <strong>Solicitud de Licencia de Negocio</strong>. Necesitará su número de Seguro Social <em>o</em> su ITIN, los datos de su negocio y un estimado de sus ingresos anuales.</li>
+      <li>Pague la tarifa de procesamiento (alrededor de $50; un nombre comercial o un endoso de ciudad puede añadir un poco más).</li>
+      <li>Reciba su UBI y su licencia — unos 10 días hábiles en línea, un poco más si aplican endosos de ciudad.</li>
+    </ol>
+
+    <div class="tip"><strong>Consejo de Moontide:</strong> Un ITIN sirve en lugar del número de Seguro Social, así que puede solicitar la licencia tenga o no un SSN. Hágalo lo antes posible — su UBI es necesario para casi todo lo demás, incluidos los pasos de comida casera y seguro de abajo.</div>
+  </section>
+
+  <!-- 2. PERMISOS -->
+  <section class="card" id="permits">
+    <span class="card-num">Paso dos</span>
+    <h2>Permisos de salud (vendedores de alimentos)</h2>
+    <p>Solo quienes venden alimentos necesitan un permiso de salud, y el <em>tipo</em> depende de qué venda y cómo lo maneje. Hay dos caminos principales, además de una tarjeta que casi todo manipulador de alimentos necesita. Si vende artesanías o productos frescos enteros, puede pasar directo a la sección de seguro.</p>
+
+    <h3>Camino A — Productos caseros no perecederos: el Permiso de Comida Casera</h3>
+    <p>Si hornea o prepara productos <strong>no perecederos</strong> en la cocina de su casa — panes, galletas, mermeladas, jaleas, conservas de fruta, hierbas y tés secos — querrá el <strong>Permiso de Comida Casera (Cottage Food) del WSDA</strong>. Permite vender directamente a los clientes en lugares como los mercados de agricultores.</p>
+    <div class="facts">
+      <span class="fact cost">Costo: $355 por dos años</span>
+      <span class="fact time">Tiempo: calcule 6–8+ semanas</span>
+    </div>
+    <ul>
+      <li><strong>Permitido:</strong> productos horneados, dulces de estufa, mermeladas/jaleas/conservas, hierbas secas y mezclas de té, extractos.</li>
+      <li><strong>No permitido:</strong> cualquier cosa que necesite refrigeración — pasteles de crema o flan, salsa fresca, verduras enlatadas, carne o pescado.</li>
+      <li>Incluye una <strong>inspección de la cocina del hogar</strong>, un plan de negocio y la aprobación de etiquetas. Las ventas tienen un límite de $35,000 al año.</li>
+      <li>Empiece en <a href="https://agr.wa.gov/departments/food-safety/food-safety/cottage-food" target="_blank" rel="noopener">WSDA Cottage Food</a>.</li>
+    </ul>
+
+    <h3>Camino B — Cocinado o servido en el lugar: permiso temporal de alimentos / de mercado</h3>
+    <p>Si prepara, cocina o sirve alimentos en el mercado — comida caliente, bebidas, fruta cortada, muestras — necesitará un permiso de <strong>Kitsap Public Health</strong> (salud pública del condado). Existe un permiso específico para los mercados de agricultores autorizados, y cada mercado al que asista necesita el suyo.</p>
+    <ul>
+      <li>La tarifa depende del nivel de riesgo de su menú. Algunos alimentos sencillos de bajo riesgo están <strong>exentos de tarifa</strong> — pero igual debe enviar una solicitud para que lo confirmen.</li>
+      <li>Solicítelo y lea los detalles en <a href="https://www.kitsappublichealth.org/fle/tempfood" target="_blank" rel="noopener">Kitsap Public Health — Temporary Food</a>.</li>
+    </ul>
+
+    <h3>Casi todos en alimentos necesitan: una Tarjeta de Manipulador de Alimentos</h3>
+    <p>Si maneja alimentos, usted (y quien le ayude) necesita una <strong>Tarjeta de Manipulador de Alimentos</strong> de Washington. Es un curso corto en línea con un examen.</p>
+    <div class="facts"><span class="fact cost">Costo: unos $10</span></div>
+    <ul>
+      <li>Obténgala en <a href="https://www.foodworkercard.wa.gov" target="_blank" rel="noopener">foodworkercard.wa.gov</a> (el sitio está disponible en español). Nota: solo cuenta la tarjeta oficial de Washington — no se aceptan tarjetas de otros estados o de programas privados.</li>
+    </ul>
+
+    <div class="tip"><strong>Consejo de Moontide:</strong> El permiso de comida casera es lo que más tarda en toda esta guía — comiéncelo varios meses antes de la temporada si puede. ¿No sabe cuál camino es el suyo? Cuéntenos qué prepara y le orientamos.</div>
+  </section>
+
+  <!-- 3. SEGURO -->
+  <section class="card" id="insurance">
+    <span class="card-num">Paso tres</span>
+    <h2>Seguro de responsabilidad civil</h2>
+    <p>La mayoría de los mercados — Moontide incluido — pide a los vendedores tener un <strong>seguro de responsabilidad civil general</strong> antes de reservar un puesto. Le protege a usted (y al mercado) si alguien se lastima o algo se daña por causa de su puesto: una caída junto a su mesa, una reacción alérgica, una carpa que se vuela.</p>
+
+    <h3>Lo que los mercados suelen pedir</h3>
+    <ul>
+      <li><strong>Responsabilidad general</strong>, comúnmente <strong>$1,000,000 por incidente</strong> y $2,000,000 en total.</li>
+      <li>Estatus de <strong>"asegurado adicional"</strong> — agregar el mercado a su póliza para que también quede cubierto. Muchas aseguradoras lo añaden gratis.</li>
+      <li>Un <strong>Certificado de Seguro (COI)</strong> — la prueba de una página que le pediremos ver. La mayoría de las aseguradoras lo emiten al instante.</li>
+    </ul>
+
+    <div class="facts">
+      <span class="fact cost">Costo: aprox. $200–$500 / año</span>
+      <span class="fact time">Tiempo: a menudo el mismo día</span>
+    </div>
+
+    <h3>Dónde conseguirlo</h3>
+    <p>Los programas hechos para vendedores suelen ser los más fáciles y económicos, y conocen los requisitos de los mercados:</p>
+    <ul>
+      <li><strong>Vendedores de alimentos:</strong> programas como FLIP (<a href="https://www.fliprogram.com/farmers-market-insurance" target="_blank" rel="noopener">fliprogram.com</a>) incluyen responsabilidad por producto para alimentos y empiezan alrededor de $299/año.</li>
+      <li><strong>Vendedores de artesanías y arte:</strong> programas como ACT Insurance (<a href="https://www.actinsurance.com/farmers-markets-insurance" target="_blank" rel="noopener">actinsurance.com</a>) cubren productos hechos a mano, con opciones por evento o anuales.</li>
+      <li>También puede preguntar a su aseguradora actual de hogar o negocio — solo asegúrese de que cualquier póliza de alimentos incluya <strong>responsabilidad por producto</strong>.</li>
+    </ul>
+
+    <div class="tip"><strong>Consejo de Moontide:</strong> Si solo participa en unos pocos mercados al año, busque una póliza por evento o de corto plazo en lugar de anual — puede costar mucho menos. Pida siempre un par de cotizaciones; lo más barato no siempre es la cobertura correcta.</div>
+  </section>
+
+  <p>Ese es todo el mapa. Hágalos en orden — primero la licencia, luego los permisos, luego el seguro — y estará listo para montar su puesto. ¿Preguntas sobre algo? Con gusto le ayudamos.</p>
+
+  <a class="back-link" href="index.html">← Volver a la solicitud de vendedor</a>
+</main>
+
+<footer>
+  <p class="hand">nos alegra tenerle aquí ♥</p>
+  <p>Moontide Events · Kitsap County, WA · <a href="mailto:hello@moontideevents.com">hello@moontideevents.com</a></p>
+</footer>
+
+<script>
+  (function(){
+    const field=document.getElementById("starfield");if(!field)return;
+    let html="";for(let i=0;i<60;i++){
+      const s=(Math.random()*1.7+0.7).toFixed(2),t=(Math.random()*100).toFixed(2),l=(Math.random()*100).toFixed(2),
+      d=(Math.random()*3.5+2.5).toFixed(2),de=(Math.random()*6).toFixed(2),m=(Math.random()*0.45+0.55).toFixed(2);
+      html+=`<span class="star" style="top:${t}%;left:${l}%;width:${s}px;height:${s}px;opacity:${m};--dur:${d}s;--delay:${de}s;--max:${m}"></span>`;
+    }field.innerHTML=html;
+  })();
+</script>
+</body>
+</html>
