@@ -81,11 +81,44 @@
   .back-link:hover{background:var(--violet-deep)}
   footer{background:var(--violet-deep);color:var(--starlight);text-align:center;padding:1.75rem 1.5rem;border-top:4px solid var(--silver);margin-top:2rem}
   footer .hand{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--ice)}
+
+  /* ---------- disclaimer gate ---------- */
+  body.gated #main{filter:blur(7px);user-select:none}
+  dialog#disclaimerGate{max-width:600px;width:calc(100% - 2rem);padding:0;border:3px solid var(--ink);border-radius:var(--wobble);background:var(--paper);color:var(--ink);box-shadow:8px 8px 0 var(--violet)}
+  dialog#disclaimerGate::backdrop{background:rgba(13,16,33,.88)}
+  #disclaimerGate .dialog-inner{padding:1.8rem 1.7rem 2rem}
+  #disclaimerGate h2{font-family:'Fraunces',serif;font-weight:900;font-size:1.5rem;color:var(--violet-deep);margin-bottom:.5rem}
+  #disclaimerGate p{font-size:.95rem;margin-bottom:.7rem}
+  #disclaimerGate ul{margin:.3rem 0 .8rem 1.2rem;font-size:.95rem}
+  #disclaimerGate li{margin-bottom:.4rem}
+  .gate-actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.2rem}
+  .gate-agree{font:inherit;font-weight:700;font-size:1rem;cursor:pointer;background:var(--violet);color:#fff;border:3px solid var(--ink);border-radius:14px 18px 14px 18px;padding:.7rem 1.5rem;min-height:50px;box-shadow:4px 4px 0 var(--ink)}
+  .gate-agree:hover{background:var(--violet-deep)}
+  .gate-decline{font:inherit;font-weight:700;font-size:1rem;cursor:pointer;background:transparent;color:var(--ink);border:2px solid var(--ink);border-radius:12px;padding:.7rem 1.3rem;min-height:50px}
+  .gate-agree:focus-visible,.gate-decline:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 </style>
+<noscript><style>body.gated #main{filter:none!important;user-select:auto!important}</style></noscript>
 </head>
-<body>
+<body class="gated">
 <a class="skip-link" href="#main">Saltar a la guía</a>
 <div id="starfield" aria-hidden="true"></div>
+<dialog id="disclaimerGate" aria-labelledby="gateTitle">
+  <div class="dialog-inner">
+    <h2 id="gateTitle">Antes de continuar…</h2>
+    <p>Estas guías para vendedores se ofrecen únicamente como un recurso amistoso de <strong>información general</strong>. Al continuar, usted entiende y acepta que:</p>
+    <ul>
+      <li>Esto <strong>no es asesoría legal, fiscal, de seguros ni de ningún otro profesional</strong>, y Moontide Events no actúa como su abogado, contador ni agente de seguros.</li>
+      <li>Las agencias gubernamentales y los profesionales con licencia son la <strong>fuente oficial y autorizada</strong> — confirme siempre los requisitos, las tarifas y los plazos con ellos antes de actuar.</li>
+      <li>Las reglas y las tarifas cambian, por lo que la información puede estar <strong>desactualizada o no aplicar a su situación</strong>.</li>
+      <li>Moontide Events <strong>no ofrece ninguna garantía</strong> sobre la exactitud o integridad y <strong>no se responsabiliza</strong> por decisiones, acciones, costos o pérdidas basadas en estas guías.</li>
+    </ul>
+    <p>Si está de acuerdo, continúe a la guía. Si no, lo regresamos.</p>
+    <div class="gate-actions">
+      <button class="gate-agree" id="gateAgree" type="button" autofocus>Entiendo y acepto ✦</button>
+      <button class="gate-decline" id="gateDecline" type="button">Regresar</button>
+    </div>
+  </div>
+</dialog>
 
 <header>
   <div class="header-inner">
@@ -231,6 +264,20 @@
 </footer>
 
 <script>
+  (function(){
+    const gate=document.getElementById("disclaimerGate");
+    if(!gate)return;
+    if(typeof gate.showModal==="function"){gate.showModal();}
+    else{document.body.classList.remove("gated");}
+    gate.addEventListener("cancel",e=>e.preventDefault());
+    document.getElementById("gateAgree").addEventListener("click",()=>{
+      document.body.classList.remove("gated");gate.close();
+    });
+    document.getElementById("gateDecline").addEventListener("click",()=>{
+      window.location.href="index.html";
+    });
+  })();
+
   (function(){
     const field=document.getElementById("starfield");if(!field)return;
     let html="";for(let i=0;i<60;i++){
